@@ -5,6 +5,27 @@
 
 ![alt text](img/sensorial.png)
 
+## Requisitos
+
+* docker 20.10.9
+* docker-compose 1.26.2
+
+## Uso
+
+1. Levantar la aplicacion corriendo lo siguiente:
+
+    ```sh
+    make s
+    ```
+
+2. Cargar la base de datos usando los scripts de mongo en la carpeta *resources*
+
+3. Para dar de baja los contenedores ejecutar:
+
+    ```sh
+    make f
+    ```
+
 ## Puertos
 
 ### Sensorial componentes
