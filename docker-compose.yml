@@ -98,7 +98,7 @@ services:
     networks:
       - docker-net
     ports:
-      - 8081:8081
+      - 9000:8081
     depends_on: 
       - mongodb
 
@@ -108,7 +108,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - 9999:8080
+      - 9001:8080
       
 
   # CONFIGURACION:

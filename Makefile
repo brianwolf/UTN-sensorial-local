@@ -2,7 +2,7 @@ start s:
 	docker-compose up -d
 
 
-finish:
+finish f:
 	docker-compose down
 
 

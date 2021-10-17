@@ -1,27 +1,27 @@
 
 # Sensorial
 
-> Imagen con Jenkins para realizar pruebas, usa la version **lts**, pero existe un alpine
+> Despliegue local de los componentes del producto **Sensorial**
 
 ![alt text](img/sensorial.png)
 
 ## Puertos
 
-* **Jenkins**: 10000
+### Sensorial componentes
+
+* **front**: 80
+* **base**: 8080
+* **back**: 5000
+* **raspberry**: 6000
+
+### Herramientas
+
+* **mongo-exporess**: 9000
+* **dozzle**: 9001
 
 ## Accesos
 
-* **USER**: admin
-* **PASS**: la contraseña aparece al levantarse Jenkins por primera vez o se puede obtener ejecutando este comando:
+### Mongodb
 
-```bash
-docker-compose exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
-```
-
-## Volumes
-
-* **jenkins**: contiene los datos guardados por jenkins
-
-## Paginas
-
-[Imagen docker hub](https://hub.docker.com/r/jenkins/jenkins/)
+* **user**: sensorial
+* **pass**: sensorial
