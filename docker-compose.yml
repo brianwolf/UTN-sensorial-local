@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  
+  frontend:
+    image: 'utnsensorial/sensorial-front:latest'
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sensorial
+      - MONGO_INITDB_ROOT_PASSWORD=sensorial
+    networks:
+      - docker-net
+    ports:
+      - '80:80'
+    depends_on: 
+      - base
+      - backend
+  
+  base:
+    image: 'utnsensorial/sensorial-base:latest'
+    restart: always
+    environment:
+      - PORT=8080
+      - CLOUD_DB=mongodb://sensorial:sensorial@mongodb/proyecto_final?authSource=admin
+      - RESTAPI_URL=http://backend:5000
+    networks:
+      - docker-net
+    ports:
+      - '8080:8080'
+    depends_on: 
+      - mongodb
+  
+  backend:
+    image: 'utnsensorial/sensorial-back:latest'
+    restart: always
+    environment:
+      - SENSORIAL_RESTAPI_AUTOCREAR_SENSORES:true
+      - SENSORIAL_RESTAPI_EMAIL_ENVIADOR=utn.sensorial@gmail.com
+      - SENSORIAL_RESTAPI_EMAIL_PASS=sensorial.01
+      - SENSORIAL_RESTAPI_MONGODB_URL=mongodb://sensorial:sensorial@mongodb/sensorial-db?authSource=admin&ssl=true
+      - SENSORIAL_RESTAPI_SMTP_HOST=smtp.sendgrid.net
+      - SENSORIAL_RESTAPI_SMTP_LOGIN=true
+      - SENSORIAL_RESTAPI_SMTP_PASS=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
+      - SENSORIAL_RESTAPI_SMTP_PORT=25
+      - SENSORIAL_RESTAPI_SMTP_USER=apikey
+    networks:
+      - docker-net
+    ports:
+      - '5000:5000'
+    depends_on: 
+      - mongodb
+
+  raspberry:
+    image: 'utnsensorial/sensorial-raspberry:latest'
+    restart: always
+    environment:
+      - SEND_BACKEND_MAX_METRICS=100
+      - SEND_BACKEND_SECONDS=10
+      - SEND_BACKEND_URL=http://backend:5000/api/v1/mediciones
+    volumes:
+      - 'raspberry:/home/.sensorial:rw'
+    networks:
+      - docker-net
+    ports:
+      - '6000:5000'
+  
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=sensorial
+      - MONGO_INITDB_ROOT_PASSWORD=sensorial
+    volumes:
+      - 'mongodb:/data/db'
+    networks:
+      - docker-net
+    ports:
+      - '27017:27017'
+
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://sensorial:sensorial@mongodb:27017/
+    networks:
+      - docker-net
+    depends_on: 
+      - mongodb
+      
+
+  # CONFIGURACION:
+  #--------------------------------------
+  
+networks:
+  docker-net:
+    name: docker-net
+    external: false
+
+volumes:
+  raspberry:
+    external: false
+  mongodb:
+    external: false
