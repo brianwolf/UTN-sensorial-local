@@ -9,9 +9,6 @@ services:
     image: utnsensorial/sensorial-front:latest
     container_name: frontend
     restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=sensorial
-      - MONGO_INITDB_ROOT_PASSWORD=sensorial
     networks:
       - docker-net
     ports:
@@ -69,7 +66,7 @@ services:
     networks:
       - docker-net
     ports:
-      - 6000:5000
+      - 5001:80
   
   mongodb:
     image: mongo
