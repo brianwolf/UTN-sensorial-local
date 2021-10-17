@@ -1,9 +1,13 @@
-version: '3.8'
+version: "3.8"
 
 services:
+
+  # SENSORIAL:
+  #--------------------------------------
   
   frontend:
-    image: 'utnsensorial/sensorial-front:latest'
+    image: utnsensorial/sensorial-front:latest
+    container_name: frontend
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=sensorial
@@ -11,13 +15,14 @@ services:
     networks:
       - docker-net
     ports:
-      - '80:80'
+      - 80:80
     depends_on: 
       - base
       - backend
   
   base:
-    image: 'utnsensorial/sensorial-base:latest'
+    image: utnsensorial/sensorial-base:latest
+    container_name: base
     restart: always
     environment:
       - PORT=8080
@@ -26,12 +31,13 @@ services:
     networks:
       - docker-net
     ports:
-      - '8080:8080'
+      - 8080:8080
     depends_on: 
       - mongodb
   
   backend:
-    image: 'utnsensorial/sensorial-back:latest'
+    image: utnsensorial/sensorial-back:latest
+    container_name: backend
     restart: always
     environment:
       - SENSORIAL_RESTAPI_AUTOCREAR_SENSORES:true
@@ -46,49 +52,63 @@ services:
     networks:
       - docker-net
     ports:
-      - '5000:5000'
+      - 5000:5000
     depends_on: 
       - mongodb
 
   raspberry:
-    image: 'utnsensorial/sensorial-raspberry:latest'
+    image: utnsensorial/sensorial-raspberry:latest
+    container_name: raspberry
     restart: always
     environment:
       - SEND_BACKEND_MAX_METRICS=100
       - SEND_BACKEND_SECONDS=10
       - SEND_BACKEND_URL=http://backend:5000/api/v1/mediciones
     volumes:
-      - 'raspberry:/home/.sensorial:rw'
+      - raspberry:/home/.sensorial:rw
     networks:
       - docker-net
     ports:
-      - '6000:5000'
+      - 6000:5000
   
   mongodb:
     image: mongo
+    container_name: mongodb
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=sensorial
       - MONGO_INITDB_ROOT_PASSWORD=sensorial
     volumes:
-      - 'mongodb:/data/db'
+      - mongodb:/data/db
     networks:
       - docker-net
     ports:
-      - '27017:27017'
+      - 27017:27017
 
+
+  # HERRAMIENTAS:
+  #--------------------------------------
 
   mongo-express:
     image: mongo-express
+    container_name: mongo-express
     restart: always
-    ports:
-      - 8081:8081
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://sensorial:sensorial@mongodb:27017/
     networks:
       - docker-net
+    ports:
+      - 8081:8081
     depends_on: 
       - mongodb
+
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9999:8080
       
 
   # CONFIGURACION:
