@@ -29,7 +29,7 @@ db.usuarios.insertMany([
   {
     ultimo_login: new Date(),
     fecha_creacion: new Date(),
-    mail: "Enzope32@gmail.com",
+    mail: "enzope32@gmail.com",
     nombre: "Enzo Perez",
     rol: "admin",
     password: "asd",
