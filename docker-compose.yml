@@ -23,7 +23,7 @@ services:
     restart: always
     environment:
       - PORT=8080
-      - CLOUD_DB=mongodb://sensorial:sensorial@mongodb/proyecto_final?authSource=admin
+      - CLOUD_DB=mongodb://sensorial:sensorial@mongodb/sensorial-db?authSource=admin
       - RESTAPI_URL=http://backend:5000
     networks:
       - docker-net
