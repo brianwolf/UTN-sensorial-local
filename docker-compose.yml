@@ -33,19 +33,20 @@ services:
       - mongodb
   
   backend:
-    image: utnsensorial/sensorial-back:latest
+    image: utnsensorial/sensorial-back:dev_latest
     container_name: backend
     restart: always
     environment:
       - SENSORIAL_RESTAPI_AUTOCREAR_SENSORES:true
       - SENSORIAL_RESTAPI_EMAIL_ENVIADOR=utn.sensorial@gmail.com
       - SENSORIAL_RESTAPI_EMAIL_PASS=sensorial.01
-      - SENSORIAL_RESTAPI_MONGODB_URL=mongodb://sensorial:sensorial@mongodb/sensorial-db?authSource=admin&ssl=true
+      - SENSORIAL_RESTAPI_MONGODB_URL=mongodb://sensorial:sensorial@mongodb/sensorial-db?authSource=admin
       - SENSORIAL_RESTAPI_SMTP_HOST=smtp.sendgrid.net
       - SENSORIAL_RESTAPI_SMTP_LOGIN=true
       - SENSORIAL_RESTAPI_SMTP_PASS=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
       - SENSORIAL_RESTAPI_SMTP_PORT=25
       - SENSORIAL_RESTAPI_SMTP_USER=apikey
+      - SENSORIAL_RESTAPI_CRON_ACTIVO=false
     networks:
       - docker-net
     ports:
